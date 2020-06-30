@@ -1,0 +1,29 @@
+Sub test()
+  Dim r%, i%
+  Dim wb As Workbook
+  Dim ws As Worksheet
+  Dim mypath$, myname$
+  Application.ScreenUpdating = False
+  Application.DisplayAlerts = False
+  mypath = ThisWorkbook.Path & "\"
+  myname = Dir(mypath & "*.csv")
+  With Worksheets(1)
+    .UsedRange.Offset(3, 0).Clear
+  End With
+  m = 3
+  Do While myname <> ""
+    If myname <> ThisWorkbook.Name Then
+      Set wb = GetObject(mypath & myname)
+      With wb
+        With .Worksheets(1)
+          m = m + 1
+          .Range("A2:Z2").Copy ThisWorkbook.Worksheets(1).Cells(m, 2)
+          ThisWorkbook.Worksheets(1).Cells(m, 1) = Mid(myname, 1, 2)
+        End With
+        .Close False
+      End With
+    End If
+    
+    myname = Dir
+  Loop
+End Sub
