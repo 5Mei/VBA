@@ -1,0 +1,54 @@
+Sub Macro1()
+'升序
+
+'
+    Range("B1").Select
+    With ActiveSheet.Sort
+        With .SortFields
+            .Clear
+            .Add Key:=Range("B2"), Order:=xlAscending
+        End With
+        .Header = xlGuess
+        .MatchCase = False
+        .SortMethod = xlPinYin
+        .Orientation = xlSortColumns
+        .SetRange Rng:=Range("A1:M257")
+        .Apply
+    End With
+    Range("J2:J257").Select
+    ActiveWindow.ScrollRow = 215
+    Selection.Copy
+    ActiveWindow.ScrollRow = 200
+End Sub
+
+
+
+Sub Macro2()
+'
+' 
+'
+
+    Range("N2").Select
+    Selection.Formula = "=(D2+G2+J2)/3"
+    Range("N2").Select
+    Selection.AutoFill Destination:=Range("N2:P2"), Type:=xlFillDefault
+    Range("N2:P2").Select
+    Selection.AutoFill Destination:=Range("N2:P257"), Type:=xlFillDefault
+    Range("N2:P257").Select
+    ActiveWindow.ScrollRow = 2
+End Sub
+
+
+Sub Macro3()
+'
+' 
+    Range("N2").Select
+    Selection.Formula = "=AVERAGE(D2,G2,J2)"
+    Range("N2").Select
+    Selection.AutoFill Destination:=Range("N2:P2"), Type:=xlFillDefault
+    Range("N2:P2").Select
+    Selection.AutoFill Destination:=Range("N2:P257"), Type:=xlFillDefault
+    Range("N2:P257").Select
+    ActiveWindow.ScrollRow = 2
+    Selection.Copy
+End Sub
