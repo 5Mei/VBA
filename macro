@@ -52,3 +52,9 @@ Sub Macro3()
     ActiveWindow.ScrollRow = 2
     Selection.Copy
 End Sub
+
+Private Sub ComboBox1_Change()
+    For i = 1 To VBA.Day(DateSerial(Year(Date), Val(ComboBox1.Text) + 1, 0))
+        ComboBox2.AddItem i & "日"
+    Next
+End Sub
