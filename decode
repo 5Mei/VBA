@@ -1,0 +1,13 @@
+Sub decode()
+
+Dim sheet As Worksheet
+
+For Each sheet In Worksheets
+
+sheet.Protect AllowFiltering:=True
+
+sheet.Unprotect
+
+Next
+
+End Sub
