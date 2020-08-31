@@ -26,6 +26,18 @@ End Sub
 Sub Macro2()
 '
 ' 
+With ActiveSheet
+    
+        .Range("M2:M257").Copy ThisWorkbook.Worksheets(1).Cells(99, i)
+        
+        For n = 2 To 257 Step 1
+        .Cells(n, 14) = (.Cells(n, 4) + .Cells(n, 7) + .Cells(n, 10)) / 3
+        .Cells(n, 15) = (.Cells(n, 5) + .Cells(n, 8) + .Cells(n, 11)) / 3
+        .Cells(n, 16) = (.Cells(n, 6) + .Cells(n, 9) + .Cells(n, 12)) / 3
+        Next n
+        .Range("N2:P257").Select
+        Selection.Copy
+End With
 '
 
     Range("N2").Select
@@ -37,6 +49,7 @@ Sub Macro2()
     Range("N2:P257").Select
     ActiveWindow.ScrollRow = 2
 End Sub
+
 
 
 Sub Macro3()
