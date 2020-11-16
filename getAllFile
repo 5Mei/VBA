@@ -1,0 +1,41 @@
+Sub getAllFile()
+'Columns(1).Delete
+On Error Resume Next
+Dim f As String
+Dim file() As String
+Dim i, k, x
+x = 1
+i = 1
+k = 1
+
+ReDim file(1 To i)
+'file(1) = sFolderPath & "\"
+file(1) = ThisWorkbook.Path & "\"
+
+'-- 获取所有子目录
+Do Until i > k
+    '-- f = Dir(ThisWorkbook.Path, vbDirectory)后返回的是当前工作簿路径下的文件夹名称
+    f = Dir(file(i), vbDirectory)
+        Do Until f = ""
+            If InStr(f, ".") = 0 Then
+                k = k + 1
+                ReDim Preserve file(1 To k)
+                file(k) = file(i) & f & "\"
+            End If
+            f = Dir
+        Loop
+    i = i + 1
+Loop
+
+'-- 获取所有子目录下的文件
+For i = 1 To k
+    f = Dir(file(i) & "*.*")    '通配符*.*表示所有文件，*.xlsx Excel文件
+    Do Until f = ""
+       'Range("a" & x) = f
+       '-- Hyperlinks.Add Anchor 引用单元格链接到数据源
+       Range("a" & x).Hyperlinks.Add Anchor:=Range("a" & x), Address:=file(i) & f, TextToDisplay:=f
+       x = x + 1
+       f = Dir
+    Loop
+Next
+End Sub
