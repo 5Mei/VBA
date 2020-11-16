@@ -1,0 +1,53 @@
+Sub B4()
+Application.ScreenUpdating = False
+Dim FileName$, Path$, AK As Workbook
+Dim i%, n%, j As Long, b As Single
+
+i = 16
+j = 40
+
+Path = ThisWorkbook.Path + "\"   'ÎÄµµËùÔÚÎÄ¼þ¼ÐÏÂµÄÎÄµµ'
+ff = ActiveWorkbook.Name
+FileName = Dir(Path & "*band_11_TB.csv")
+Application.ScreenUpdating = False
+Do While FileName <> ""
+
+  Workbooks.Open (Path & FileName)
+   
+    With ActiveSheet.Sort
+        With .SortFields
+            .Clear
+            .Add Key:=Range("B2"), Order:=xlAscending
+        End With
+        .Header = xlGuess
+        .MatchCase = False
+        .SortMethod = xlPinYin
+        .Orientation = xlSortColumns
+        .SetRange Rng:=Range("A1:M257")
+        .Apply
+    End With
+    
+    With ActiveSheet
+    
+        .Range("M2:M257").Copy
+        ThisWorkbook.Worksheets("Gamma_4nit").Cells(99, i).PasteSpecial xlPasteValues
+        
+        .Range("N2").Select
+        Selection.Formula = "=AVERAGE(D2,G2,J2)"
+        .Range("N2").Select
+        Selection.AutoFill Destination:=Range("N2:P2"), Type:=xlFillDefault
+        .Range("N2:P2").Select
+        Selection.AutoFill Destination:=Range("N2:P257"), Type:=xlFillDefault
+        .Range("N2:P257").Copy
+        ThisWorkbook.Worksheets("Gamma_4nit").Cells(99, j).PasteSpecial xlPasteValues
+    End With
+    
+    ThisWorkbook.Worksheets("Gamma_4nit").Cells(96, j - 1) = Mid(FileName, 1, 100)
+    ActiveWindow.Close False
+   i = i + 4
+   j = j + 24
+   FileName = Dir
+   
+Loop
+Application.ScreenUpdating = True
+End Sub
