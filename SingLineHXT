@@ -1,0 +1,33 @@
+Sub shxt()
+
+Dim i%, j As Long
+Dim wb As Workbook
+Dim ws As Worksheet
+Dim mypath$, myname$
+Arr = Array("*SingleLineHXT_Green_left_SingleLineHXT_1#.csv", "*SingleLineHXT_Green_left_BaseA_1#.csv", "*SingleLineHXT_White_left_SingleLineHXT_1#.csv", "*SingleLineHXT_White_left_BaseA_1#.csv", "*SingleLineHXT_Green_right_SingleLineHXT_1#.csv", "*SingleLineHXT_Green_right_BaseB_1#.csv", "*SingleLineHXT_White_right_SingleLineHXT_1#.csv", "*SingleLineHXT_White_right_BaseB_1#.csv")
+
+
+i = 4
+j = 5
+mypath = ThisWorkbook.Path + "\"
+
+Application.ScreenUpdating = False
+Application.DisplayAlerts = False
+
+For n = 0 To 7
+  myname = Dir(mypath & Arr(n))
+
+  Set wb = GetObject(mypath & myname)
+      With wb
+        With .Worksheets(1)
+            .Range("A1:H13").Copy ThisWorkbook.Worksheets(1).Cells(j, 2)
+            ThisWorkbook.Worksheets(1).Cells(i, 1) = Mid(myname, 1, 100)
+            j = j + 14
+            i = i + 14
+        End With
+    End With
+    
+Next
+Application.ScreenUpdating = True
+
+End Sub
