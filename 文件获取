@@ -1,0 +1,48 @@
+Sub getAllFile()
+'Columns(1).Delete
+On Error Resume Next
+Dim f As String
+Dim file() As String
+Dim i, k, x
+x = 1
+i = 1
+k = 1
+
+ReDim file(1 To i)
+'file(1) = sFolderPath & "\"
+file(1) = ThisWorkbook.Path & "\"
+
+'-- »ñµÃËùÓÐ×ÓÄ¿Â¼
+Do Until i > k
+    f = Dir(file(i), vbDirectory)
+        Do Until f = ""
+            If InStr(f, ".") = 0 Then
+                k = k + 1
+                ReDim Preserve file(1 To k)
+                'file(k) = file(i) & f & "\"
+                file(k) = f
+            End If
+            f = Dir
+        Loop
+    i = i + 1
+Loop
+
+'-- »ñµÃËùÓÐ×ÓÄ¿Â¼ÏÂµÄËùÓÐÎÄ¼þ
+For i = 1 To k
+    Worksheets.Add
+    ActiveSheet.Name = file(i)
+    f = Dir(ThisWorkbook.Path & "\" & file(i) & "\" & "*.*")
+    Do Until f = ""
+       'Range("a" & x) = f
+    
+       Range("a" & x).Hyperlinks.Add Anchor:=Range("a" & x), Address:=file(i) & f, TextToDisplay:=f
+
+       x = x + 1
+       f = Dir
+    Loop
+
+    
+Next
+    
+
+End Sub
