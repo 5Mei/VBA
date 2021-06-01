@@ -1,0 +1,143 @@
+
+Sub RXT()
+  Dim i%, n%, m%, j%, x%
+  Dim wb As Workbook
+  Dim ws As Worksheet
+  Dim mypath$, myname$
+  m = 6
+  i = 1
+  j = 6
+  arr = Array("Black", "W", "R", "G", "B", "C", "m", "Y")
+  arr1 = Array("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12")
+  dataNo = Array("3", "4", "6", "7", "9", "10", "13", "14", "16", "17", "19", "20", "24", "25", "27", "28", "30", "31", "34", "35", "37", "38", "40", "41", "44", "45", "47", "48", "50", "51", "54", "55", "57", "58", "60", "61", "64", "65", "67", "68", "70", "71", "74", "75", "77", "78", "80", "81", "84", "85", "87", "88", "90", "91", "94", "95", "97", "98", "100", "101", "104", "105", "107", "108", "110", "111", "114", "115", "117", "118", "120", "121", "124", "125", "127", "128", "130", "131", "134", "135", "137", "138", "140", "141", "144", "145", "147", "148", "150", "151", "154", "155", "157", "158", "160", "161")
+  Application.ScreenUpdating = False
+  Application.DisplayAlerts = False
+  mypath = ThisWorkbook.Path & "\"
+  myname = Dir(mypath & "*.csv")
+  With Worksheets(1)
+    .UsedRange.Offset(1, 3).Clear
+  End With
+  Do While myname <> ""
+    If myname <> ThisWorkbook.Name Then
+      Set wb = GetObject(mypath & myname)
+      With wb
+        With .Worksheets(1)
+          
+          'm = ThisWorkbook.Worksheets(1).Range("D65536").End(xlUp).Row + 1
+          'i = .Range("A65536").End(xlUp).Row
+          
+          .Range("B2:T97").Copy ThisWorkbook.Worksheets(1).Cells(m, 4)
+          'ThisWorkbook.Worksheets(1).Cells(m, 4).PasteSpecial xlPasteValues
+          ThisWorkbook.Worksheets(1).Range(Cells(m, 1), Cells(m + 95, 1)) = Mid(myname, 1, 50)
+        End With
+        .Close False
+      End With
+    End If
+    m = m + 96
+    myname = Dir
+  Loop
+  
+  
+    With ThisWorkbook
+    For n = 0 To 7
+        .Worksheets(1).Range("A5:BI485").AutoFilter Field:=3, Criteria1:=Array(arr(n)), Operator:=xlFilterValues
+        j = 6
+        j = j + n
+        
+        For i = 1 To 12
+            x = dataNo(n * 12 + i - 1)
+            .Worksheets(1).Range("A5:BI485").AutoFilter Field:=2, Criteria1:=Array(arr1(i - 1)), Operator:=xlFilterValues
+            .Worksheets(1).Range("I" & j & ":I" & j + 384).Copy
+            .Worksheets(2).Cells(43, x).PasteSpecial Paste:=xlPasteValues
+            j = j + 8
+
+        Next
+
+
+    Next
+    End With
+  
+  
+  Application.ScreenUpdating = True
+End Sub
+
+
+
+Sub sta()
+  Dim i%, n%, m%, j%, x%
+  Dim wb As Workbook
+  Dim ws As Worksheet
+  Dim col$, su$
+  m = 0
+  i = 1
+  j = 6
+  x = j + 384
+  arr = Array("Black", "W", "R", "G", "B", "C", "m", "Y")
+  arr1 = Array("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12")
+  dataNo = Array("3", "4", "6", "7", "9", "10", "13", "14", "16", "17", "19", "20", "24", "25", "27", "28", "30", "31", "34", "35", "37", "38", "40", "41", "44", "45", "46", "47", "48", "50", "51", "54", "55", "57", "58", "60", "61", "64", "65", "67", "68", "70", "71", "74", "75", "77", "78", "80", "81", "84", "85", "87", "88", "90", "91", "94", "95", "97", "98", "100", "101", "104", "105", "107", "108", "110", "111", "113", "114", "115", "116", "117", "118", "120", "121", "124", "125", "127", "128", "130", "131", "134", "135", "137", "138", "140", "141", "144", "145", "147", "148", "150", "151", "154", "155", "157", "158", "160", "161")
+  Application.ScreenUpdating = False
+  Application.DisplayAlerts = False
+    
+    
+    For n = 0 To 7
+        col = arr(n)
+        Sheets("data ´¦Àí-VP402 (2)").Activate
+        Range("A5:BI485").AutoFilter Field:=3, Criteria1:=Array(col), Operator:=xlFilterValues
+        'ActiveWorkbook.Names.Add Name:="'data ´¦Àí-VP402 (2)'!_FilterDatabase", RefersTo:="='data ´¦Àí-VP402 (2)'!$A$5:$BI$485", Visible:=False
+        
+        For i = 1 To 12
+            m = dataNo(n * 12 + i - 1)
+            Range("A5:BI485").AutoFilter Field:=2, Criteria1:=Array(arr1(i - 1)), Operator:=xlFilterValues
+            'ActiveWorkbook.Names.Add Name:="'data ´¦Àí-VP402 (2)'!_FilterDatabase", RefersTo:="='data ´¦Àí-VP402 (2)'!$A$5:$BI$485", Visible:=False
+            Range("I" & j & ":I" & x).Select
+            Selection.Copy
+            Sheets("Regular X-Talk").Activate
+            Cells(43, m).Select
+            Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlPasteSpecialOperationNone, SkipBlanks:=False, Transpose:=False
+            m = m + 1
+            Sheets("data ´¦Àí-VP402 (2)").Activate
+            j = j + 8
+            x = x + 8
+        Next
+
+    Next
+End Sub
+
+
+Sub wi()
+  Dim i%, n%, m%, j%, x%
+  Dim wb As Workbook
+  Dim ws As Worksheet
+  Dim col$, su$
+  m = 0
+  i = 1
+  j = 6
+  x = j + 384
+  arr = Array("Black", "W", "R", "G", "B", "C", "m", "Y")
+  arr1 = Array("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12")
+  dataNo = Array("3", "4", "6", "7", "9", "10", "13", "14", "16", "17", "19", "20", "24", "25", "27", "28", "30", "31", "34", "35", "37", "38", "40", "41", "44", "45", "46", "47", "48", "50", "51", "54", "55", "57", "58", "60", "61", "64", "65", "67", "68", "70", "71", "74", "75", "77", "78", "80", "81", "84", "85", "87", "88", "90", "91", "94", "95", "97", "98", "100", "101", "104", "105", "107", "108", "110", "111", "113", "114", "115", "116", "117", "118", "120", "121", "124", "125", "127", "128", "130", "131", "134", "135", "137", "138", "140", "141", "144", "145", "147", "148", "150", "151", "154", "155", "157", "158", "160", "161")
+  Application.ScreenUpdating = False
+  Application.DisplayAlerts = False
+    
+    
+    
+    With ThisWorkbook
+    For n = 0 To 7
+        
+        .Worksheets(1).Range("A5:BI485").AutoFilter Field:=3, Criteria1:=Array(arr(n)), Operator:=xlFilterValues
+        
+        For i = 1 To 12
+            m = dataNo(n * 12 + i - 1)
+            .Worksheets(1).Range("A5:BI485").AutoFilter Field:=2, Criteria1:=Array(arr1(i - 1)), Operator:=xlFilterValues
+            
+            .Worksheets(1).Range("I" & j & ":I" & j + 384).Copy
+
+            .Worksheets(2).Cells(43, m).PasteSpecial Paste:=xlPasteValues
+            j = j + 8
+
+        Next
+
+
+    Next
+    End With
+End Sub
