@@ -1,0 +1,153 @@
+Sub AL()
+Application.ScreenUpdating = False
+Application.DisplayAlerts = False
+'Call W1200
+
+
+
+Dim FileName$, Path$, AK As Workbook
+Dim ShtName$   'band$, col$
+Dim i%, j As Long, b As Single
+
+Arr1 = Array("*band_1", "*band_2", "*band_3", "*band_4", "*band_6", "*band_7", "*band_9", "*band_11")
+Arr2 = Array("_TW.csv", "_TR.csv", "_TG.csv", "_TB.csv")
+
+Path = ThisWorkbook.Path + "\"   'ÎÄµµËùÔÚÎÄ¼þ¼ÐÏÂµÄÎÄµµ'
+
+For Each band In Arr1
+    For Each col In Arr2
+        FileName = Dir(Path & band & col)
+        ShtName = Mid(band, 2, Len(band)) & Mid(col, 1, Len(col) - 4)
+        i = 5
+        j = 4
+        
+             Do While FileName <> ""
+                Workbooks.Open (Path & FileName)
+                  With ActiveSheet.Sort
+                      With .SortFields
+                          .Clear
+                          .Add Key:=Range("B2"), Order:=xlAscending
+                      End With
+                      .Header = xlGuess
+                      .MatchCase = False
+                      .SortMethod = xlPinYin
+                      .Orientation = xlSortColumns
+                      .SetRange Rng:=Range("A1:M257")
+                      .Apply
+                  End With
+                  With ActiveSheet
+                      .Range("N2").Select
+                      Selection.Formula = "=AVERAGE(D2,G2,J2)"
+                      .Range("N2").Select
+                      Selection.AutoFill Destination:=Range("N2:P2"), Type:=xlFillDefault
+                      .Range("N2:P2").Select
+                      Selection.AutoFill Destination:=Range("N2:P257"), Type:=xlFillDefault
+                      .Range("N2:N257").Copy
+                      .Range("Q2").PasteSpecial xlPasteValues
+                      .Range("O2:Q257").Copy
+                      ThisWorkbook.Worksheets(ShtName).Cells(40, j).PasteSpecial xlPasteValues
+                  End With
+                  ThisWorkbook.Worksheets(ShtName).Cells(37, i) = Mid(FileName, 1, 40)
+                  ActiveWindow.Close False
+              
+                  If col = "_TW.csv" Then
+                    i = i + 6
+                    j = j + 6
+                  Else
+                    i = i + 3
+                    j = j + 3
+                  End If
+                  FileName = Dir
+                 
+                Loop
+                
+            Next
+        Next
+
+
+Application.ScreenUpdating = True
+Application.DisplayAlerts = True
+
+
+End Sub
+
+
+
+Sub SA()
+    Dim wbSrc As Workbook
+    Dim wbDes As Workbook
+    Dim ws As Worksheet
+    Arr1 = Array("*band_1", "*band_2", "*band_3", "*band_4", "*band_6", "*band_7", "*band_9", "*band_11")
+    Arr2 = Array("_TR.csv", "_TG.csv", "_TB.csv")       ', "_TR.csv", "_TG.csv", "_TB.csv"
+    
+    For Each col In Arr2
+        For Each band In Arr1
+    
+            ShtName = Mid(band, 2, Len(band)) & Mid(col, 1, Len(col) - 4)
+            Set ws = ThisWorkbook.Worksheets("RED_Track_1200nits")
+            ws.Copy after:=ThisWorkbook.Worksheets(Worksheets.Count)
+            ThisWorkbook.Worksheets("RED_Track_1200nits (2)").Name = ShtName
+        Next
+    Next
+    
+    
+    
+    
+End Sub
+
+Sub ReName()
+    Dim wbSrc As Workbook
+    Dim wbDes As Workbook
+    Dim ws As Worksheet
+    Dim ShtName$, NewName$
+    
+    Arr1 = Array("*band_1", "*band_2", "*band_3", "*band_4", "*band_6", "*band_7", "*band_9", "*band_11")
+    Arr2 = Array("_TW.csv", "_TR.csv", "_TG.csv", "_TB.csv")
+    
+    For Each band In Arr1
+        For Each col In Arr2
+    
+            ShtName = Mid(band, 2, Len(band)) & Mid(col, 1, Len(col) - 4)
+            bandNo = Mid(band, 7, Len(band))
+  
+            Select Case bandNo
+                Case "1"
+                    Lv = "2175nits"
+                Case "2"
+                    Lv = "1200nits"
+                Case "3"
+                    Lv = "650nits"
+                Case "4"
+                    Lv = "300nits"
+                Case "6"
+                    Lv = "100nits"
+                Case "7"
+                    Lv = "50nits"
+                Case "9"
+                    Lv = "15nits"
+                Case "11"
+                    Lv = "4nits"
+                Case Else
+                    MsgBox "Unknown Lv"
+            End Select
+            
+            If col = "_TW.csv" Then
+                    colNo = "W_GrayTrack_"
+            ElseIf col = "_TR.csv" Then
+                    colNo = "RED_GrayTrack_"
+            ElseIf col = "_TG.csv" Then
+                    colNo = "GREEN_GrayTrack_"
+            ElseIf col = "_TB.csv" Then
+                    colNo = "BLUE_GrayTrack_"
+            End If
+
+            ThisWorkbook.Worksheets(ShtName).Name = colNo & Lv
+        Next
+    Next
+    
+    
+    
+    
+End Sub
+
+
