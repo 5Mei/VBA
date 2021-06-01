@@ -1,0 +1,32 @@
+Sub Spectrum()
+  Dim r%, i%
+  Dim wb As Workbook
+  Dim ws As Worksheet
+  Dim mypath$, myname$
+  Application.ScreenUpdating = False
+  Application.DisplayAlerts = False
+  mypath = ThisWorkbook.Path & "\"
+  myname = Dir(mypath & "*.xlsx")
+  With Worksheets(1)
+    .UsedRange.Offset(3, 0).Clear
+  End With
+  m = 3
+  Do While myname <> ""
+    If myname <> ThisWorkbook.Name Then
+      Set wb = GetObject(mypath & myname)
+      With wb
+        With .Worksheets(1)
+          m = m + 1
+          .Range("A2:ON14").Copy ThisWorkbook.Worksheets(1).Cells(m, 2)
+          ThisWorkbook.Worksheets(1).Range(Cells(m, 1), Cells(m + 12, 1)) = Mid(myname, 1, Len(myname) - 5)
+        End With
+        .Close False
+      End With
+    End If
+    m = m + 12
+    myname = Dir
+  Loop
+  
+  Columns("A:A").TextToColumns Destination:=Range("A1"), DataType:=xlDelimited, TextQualifier:=xlTextQualifierDoubleQuote, ConsecutiveDelimiter:=False, Tab:=True, Semicolon:=False, Comma:=False, Space:=False, Other:=True, OtherChar:="-", FieldInfo:=Array(Array(1, 1), Array(2, 1), Array(3, 1)), TrailingMinusNumbers:=True
+  
+End Sub
