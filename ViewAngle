@@ -1,0 +1,83 @@
+Sub Button1_Click()
+'
+Dim r%, i%, n%, m%
+  Dim wb As Workbook
+  Dim ws As Worksheet
+  Dim mypath$, myname$
+  Application.ScreenUpdating = False
+  Application.DisplayAlerts = False
+  mypath = ThisWorkbook.Path & "\"
+  myname = Dir(mypath & "*.xlsx")
+  'With Worksheets(1)
+   ' .UsedRange.Offset(3, 0).Clear
+ ' End With
+  m = 3
+  r = 4
+  i = 228
+  n = 39
+  
+  Do While myname <> ""
+    If myname <> ThisWorkbook.Name Then
+      Set wb = GetObject(mypath & myname)
+       ' Workbooks(FileName).Activate'
+   ' Sheets(1).Range("E1:F257").Select
+   ' Selection.Copy
+   ' Sheets(1).Cells(1, 2).PasteSpecial Paste:=xlPasteValues
+   
+      With wb
+        With .Worksheets(2)
+            .Columns("I:I").Copy .Cells(1, 15)
+            
+            '.Selection.Copy
+           '.Columns("O:O").Select
+           ' .Paste
+          For r = 4 To 32 Step 28
+          .Range(.Cells(r, 13), .Cells(r + 27, 15)).Copy ThisWorkbook.Worksheets(1).Cells(n, m)
+          .Range(.Cells(r + 224, 13), .Cells(r + 224 + 27, 15)).Copy ThisWorkbook.Worksheets(1).Cells(n, m + 3)
+          m = m + 6
+          Next
+          
+          For r = 60 To 200 Step 28
+          .Range(.Cells(r, 13), .Cells(r + 27, 15)).Copy ThisWorkbook.Worksheets(1).Cells(n, m)
+          .Range(.Cells(r + 224, 13), .Cells(r + 224 + 27, 15)).Copy ThisWorkbook.Worksheets(1).Cells(n, m + 4)
+          m = m + 8
+          Next
+          
+          ThisWorkbook.Worksheets(1).Cells(n - 4, 1) = Mid(myname, 1, 10)
+          
+        End With
+        .Close False
+      End With
+    End If
+    m = 3
+    n = n + 33
+    myname = Dir
+  Loop
+'
+End Sub
+Sub Button2_ClickClear()
+Dim r%, i%, n%, m%
+
+With ThisWorkbook
+    With .Worksheets(1)
+        m = 15
+        n = 39
+
+        For i = 1 To 10 Step 1
+            .Range(.Cells(n, 3), .Cells(n + 27, 14)).Clear
+            
+             For r = 1 To 12 Step 1
+                .Range(.Cells(n, m), .Cells(n + 27, m + 2)).Clear
+                m = m + 4
+            Next
+            m = 15
+            n = n + 33
+        Next
+        
+        
+    End With
+End With
+
+End Sub
+
+
