@@ -1,0 +1,174 @@
+Sub getAllFile()
+'Columns(1).Delete
+On Error Resume Next
+Dim f As String
+Dim file() As String
+Dim wb As Workbook
+Dim ws As Worksheet
+Dim mypath$, myname$
+Dim i, k, x, n
+Application.ScreenUpdating = False
+Application.DisplayAlerts = False
+i = 1
+k = 1
+
+Arr = Array("*SingleLineHXT_Green_left_SingleLineHXT_1#.csv", "*SingleLineHXT_Green_left_BaseA_1#.csv", "*SingleLineHXT_White_left_SingleLineHXT_1#.csv", "*SingleLineHXT_White_left_BaseA_1#.csv", "*SingleLineHXT_Green_right_SingleLineHXT_1#.csv", "*SingleLineHXT_Green_right_BaseB_1#.csv", "*SingleLineHXT_White_right_SingleLineHXT_1#.csv", "*SingleLineHXT_White_right_BaseB_1#.csv")
+
+ReDim file(1 To i)
+'file(1) = sFolderPath & "\"
+file(1) = ThisWorkbook.Path & "\"
+
+'-- 子目录
+Do Until i > k
+    f = Dir(file(i), vbDirectory)
+        Do Until f = ""
+            If InStr(f, ".") = 0 Then
+                k = k + 1
+                ReDim Preserve file(1 To k)
+                'file(k) = file(i) & f & "\"
+                file(k) = f
+            End If
+            f = Dir
+        Loop
+    i = i + 1
+Loop
+
+'-- 子目录文件
+For i = 2 To k
+    Worksheets.Add 'before:=Worksheets("数据分析")
+    ActiveSheet.Name = file(i)
+    j = 5
+    x = 4
+      For n = 0 To 7
+        myname = Dir(ThisWorkbook.Path & "\" & file(i) & "\" & Arr(n))
+
+        Set wb = GetObject(ThisWorkbook.Path & "\" & file(i) & "\" & myname)
+         With wb
+             With .Worksheets(1)
+            .Range("A1:H13").Copy ThisWorkbook.Worksheets(file(i)).Cells(j, 2)
+            ThisWorkbook.Worksheets(file(i)).Cells(x, 1) = Mid(myname, 1, Len(myname) - 5)
+            
+            ThisWorkbook.Worksheets("数据分析").Range("J4:Q115").Copy ThisWorkbook.Worksheets(file(i)).Range("J4")
+ 
+            j = j + 14
+            x = x + 14
+            End With
+            .Close False
+        End With
+     Next
+
+Next
+    
+Application.ScreenUpdating = True
+End Sub
+
+Sub CommandButton_Click()
+Application.ScreenUpdating = False
+Application.DisplayAlerts = False
+Dim FileName$, Path$, AK As Workbook
+'Dim wb As Workbook
+'Dim ws As Worksheet
+Dim mypath$, myname$
+Dim i%, n%, j As Long, b As Single
+
+i = 0
+j = 5
+n = 1
+Path = ThisWorkbook.Path + "\"   'ÎÄµµËùÔÚÎÄ¼þ¼ÐÏÂµÄÎÄµµ'
+ff = ActiveWorkbook.Name
+FileName = Dir(Path & "*.xlsm")
+Application.ScreenUpdating = False
+Do While FileName <> ""
+    If FileName <> ff Then
+
+       ' Workbooks.Open (Path & FileName)
+       'Set wb = GetObject(Path & FileName)
+        Set wb = Workbooks.Open(Path & FileName)
+        For Each ws In Worksheets
+            If i < 5 Then
+                
+            Else
+                i = 0
+                j = 5
+                n = n + 1
+            End If
+            If ws.Name <> "Êý¾Ý·ÖÎö" Then
+                ws.Range("L4:Q16").Copy
+                ThisWorkbook.Worksheets(n).Cells(j, 2).PasteSpecial Paste:=xlPasteValues
+                ThisWorkbook.Worksheets(n).Cells(j - 1, 1) = ws.Name
+                j = j + 16
+                i = i + 1
+            
+            End If
+         Next
+         wb.Close False
+    End If
+        
+   FileName = Dir
+   
+Loop
+Application.ScreenUpdating = True
+End Sub
+
+Sub clickCopyValues()
+    Dim i%, n%
+    For n = 1 To 7 Step 1
+        ThisWorkbook.Worksheets(n).Columns("N:R").Copy
+        ThisWorkbook.Worksheets(n).Columns("N:R").PasteSpecial Paste:=xlPasteValues
+    Next
+End Sub
+
+Sub SaveNewBook()
+    Application.ScreenUpdating = False
+    Application.DisplayAlerts = False
+    Dim i%, n%
+    Dim FileName$, Path$
+    Dim nbk As Workbook
+    n = 1
+    Set nbk = Workbooks.Add
+    With nbk.Worksheets
+        .Add After:=nbk.Worksheets(.Count), Count:=7 - .Count
+    End With
+
+    For Each ws In ThisWorkbook.Worksheets
+        ws.Range("K3:U62").Copy nbk.Worksheets(n).Cells(1, 1)
+        n = n + 1
+    Next
+    nbk.SaveAs ThisWorkbook.Path & "\SHXT" & Format(Now, "hhmmss") & ".xls"
+    nbk.Close True
+End Sub
+
+Dim file() As String
+Dim i, k, x
+x = 1
+i = 1
+k = 1
+
+ReDim file(1 To i)
+file(1) = sFolderPath & "\"
+
+'-- »ñµÃËùÓÐ×ÓÄ¿Â¼
+Do Until i > k
+    f = Dir(file(i), vbDirectory)
+        Do Until f = ""
+            If InStr(f, ".") = 0 Then
+                k = k + 1
+                ReDim Preserve file(1 To k)
+                file(k) = file(i) & f & "\"
+            End If
+            f = Dir
+        Loop
+    i = i + 1
+Loop
+
+'-- »ñµÃËùÓÐ×ÓÄ¿Â¼ÏÂµÄËùÓÐÎÄ¼þ
+For i = 1 To k
+    f = Dir(file(i) & "*.*")    'Í¨Åä·û*.*±íÊ¾ËùÓÐÎÄ¼þ£¬*.xlsx ExcelÎÄ¼þ
+    Do Until f = ""
+       'Range("a" & x) = f
+       Range("a" & x).Hyperlinks.Add Anchor:=Range("a" & x), Address:=file(i) & f, TextToDisplay:=f
+        x = x + 1
+        f = Dir
+    Loop
+Next
+End Sub
