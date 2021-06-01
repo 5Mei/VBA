@@ -1,0 +1,161 @@
+Sub testAll()
+Call test
+Call testr
+Call testg
+Call testb
+
+End Sub
+
+
+
+
+Sub test()
+  Dim r%, i%
+  Dim wb As Workbook
+  Dim ws As Worksheet
+  Dim mypath$, myname$
+  Application.ScreenUpdating = False
+  Application.DisplayAlerts = False
+  mypath = ThisWorkbook.Path & "\"
+  myname = Dir(mypath & "*W.csv")
+  'With Worksheets(1)
+    '.UsedRange.Offset(3, 0).Clear
+  'End With
+  m = 3
+  Do While myname <> ""
+    If myname <> ThisWorkbook.Name Then
+      Set wb = GetObject(mypath & myname)
+      With wb
+        With .Worksheets(1)
+          .Range("A2:C129").Copy
+          ThisWorkbook.Worksheets("APL Dependant Gamma").Cells(13, m).PasteSpecial xlPasteValues
+          .Range("D2:F129").Copy
+          ThisWorkbook.Worksheets("APL Dependant Gamma").Cells(13, m + 4).PasteSpecial xlPasteValues
+          .Range("G2:I129").Copy
+          ThisWorkbook.Worksheets("APL Dependant Gamma").Cells(13, m + 8).PasteSpecial xlPasteValues
+          .Range("J2:L129").Copy
+          ThisWorkbook.Worksheets("APL Dependant Gamma").Cells(13, m + 12).PasteSpecial xlPasteValues
+          .Range("M2:O129").Copy
+          ThisWorkbook.Worksheets("APL Dependant Gamma").Cells(13, m + 16).PasteSpecial xlPasteValues
+          ThisWorkbook.Worksheets("APL Dependant Gamma").Cells(9, m) = Mid(myname, 1, 6)
+        End With
+        .Close False
+      End With
+    End If
+    m = m + 21
+    myname = Dir
+  Loop
+End Sub
+
+Sub testr()
+  Dim r%, i%
+  Dim wb As Workbook
+  Dim ws As Worksheet
+  Dim mypath$, myname$
+  Application.ScreenUpdating = False
+  Application.DisplayAlerts = False
+  mypath = ThisWorkbook.Path & "\"
+  myname = Dir(mypath & "*Red.csv")
+  'With Worksheets(1)
+    '.UsedRange.Offset(3, 0).Clear
+  'End With
+  m = 3
+  Do While myname <> ""
+    If myname <> ThisWorkbook.Name Then
+      Set wb = GetObject(mypath & myname)
+      With wb
+        With .Worksheets(1)
+          .Range("A2:C129").Copy
+          ThisWorkbook.Worksheets("APL Dependant Gamma_Red").Cells(13, m).PasteSpecial xlPasteValues
+          .Range("D2:F129").Copy
+          ThisWorkbook.Worksheets("APL Dependant Gamma_Red").Cells(13, m + 4).PasteSpecial xlPasteValues
+          .Range("G2:I129").Copy
+          ThisWorkbook.Worksheets("APL Dependant Gamma_Red").Cells(13, m + 8).PasteSpecial xlPasteValues
+          .Range("J2:L129").Copy
+          ThisWorkbook.Worksheets("APL Dependant Gamma_Red").Cells(13, m + 12).PasteSpecial xlPasteValues
+          .Range("M2:O129").Copy
+          ThisWorkbook.Worksheets("APL Dependant Gamma_Red").Cells(13, m + 16).PasteSpecial xlPasteValues
+          ThisWorkbook.Worksheets("APL Dependant Gamma_Red").Cells(9, m) = Mid(myname, 1, 6)
+        End With
+        .Close False
+      End With
+    End If
+    m = m + 21
+    myname = Dir
+  Loop
+End Sub
+Sub testg()
+  Dim r%, i%
+  Dim wb As Workbook
+  Dim ws As Worksheet
+  Dim mypath$, myname$
+  Application.ScreenUpdating = False
+  Application.DisplayAlerts = False
+  mypath = ThisWorkbook.Path & "\"
+  myname = Dir(mypath & "*Green.csv")
+  'With Worksheets(1)
+    '.UsedRange.Offset(3, 0).Clear
+  'End With
+  m = 3
+  Do While myname <> ""
+    If myname <> ThisWorkbook.Name Then
+      Set wb = GetObject(mypath & myname)
+      With wb
+        With .Worksheets(1)
+          .Range("A2:C129").Copy
+          ThisWorkbook.Worksheets("APL Dependant Gamma_Green").Cells(13, m).PasteSpecial xlPasteValues
+          .Range("D2:F129").Copy
+          ThisWorkbook.Worksheets("APL Dependant Gamma_Green").Cells(13, m + 4).PasteSpecial xlPasteValues
+          .Range("G2:I129").Copy
+          ThisWorkbook.Worksheets("APL Dependant Gamma_Green").Cells(13, m + 8).PasteSpecial xlPasteValues
+          .Range("J2:L129").Copy
+          ThisWorkbook.Worksheets("APL Dependant Gamma_Green").Cells(13, m + 12).PasteSpecial xlPasteValues
+          .Range("M2:O129").Copy
+          ThisWorkbook.Worksheets("APL Dependant Gamma_Green").Cells(13, m + 16).PasteSpecial xlPasteValues
+          ThisWorkbook.Worksheets("APL Dependant Gamma_Green").Cells(9, m) = Mid(myname, 1, 6)
+        End With
+        .Close False
+      End With
+    End If
+    m = m + 21
+    myname = Dir
+  Loop
+End Sub
+Sub testb()
+  Dim r%, i%
+  Dim wb As Workbook
+  Dim ws As Worksheet
+  Dim mypath$, myname$
+  Application.ScreenUpdating = False
+  Application.DisplayAlerts = False
+  mypath = ThisWorkbook.Path & "\"
+  myname = Dir(mypath & "*Blue.csv")
+  'With Worksheets(1)
+    '.UsedRange.Offset(3, 0).Clear
+  'End With
+  m = 3
+  Do While myname <> ""
+    If myname <> ThisWorkbook.Name Then
+      Set wb = GetObject(mypath & myname)
+      With wb
+        With .Worksheets(1)
+          .Range("A2:C129").Copy
+          ThisWorkbook.Worksheets("APL Dependant Gamma_Blue").Cells(13, m).PasteSpecial xlPasteValues
+          .Range("D2:F129").Copy
+          ThisWorkbook.Worksheets("APL Dependant Gamma_Blue").Cells(13, m + 4).PasteSpecial xlPasteValues
+          .Range("G2:I129").Copy
+          ThisWorkbook.Worksheets("APL Dependant Gamma_Blue").Cells(13, m + 8).PasteSpecial xlPasteValues
+          .Range("J2:L129").Copy
+          ThisWorkbook.Worksheets("APL Dependant Gamma_Blue").Cells(13, m + 12).PasteSpecial xlPasteValues
+          .Range("M2:O129").Copy
+          ThisWorkbook.Worksheets("APL Dependant Gamma_Blue").Cells(13, m + 16).PasteSpecial xlPasteValues
+          ThisWorkbook.Worksheets("APL Dependant Gamma_Blue").Cells(9, m) = Mid(myname, 1, 6)
+        End With
+        .Close False
+      End With
+    End If
+    m = m + 21
+    myname = Dir
+  Loop
+End Sub
+
