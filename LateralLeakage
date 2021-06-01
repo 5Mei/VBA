@@ -1,0 +1,109 @@
+Sub test()
+  Dim r%, i%
+  Dim wb As Workbook
+  Dim ws As Worksheet
+  Dim mypath$, myname$
+  Application.ScreenUpdating = False
+  Application.DisplayAlerts = False
+  mypath = ThisWorkbook.Path & "\"
+  myname = Dir(mypath & "*.csv")
+  With Worksheets(1)
+    .UsedRange.Offset(3, 0).Clear
+  End With
+  m = 3
+  Do While myname <> ""
+    If myname <> ThisWorkbook.Name Then
+      Set wb = GetObject(mypath & myname)
+      With wb
+        With .Worksheets(1)
+          m = ThisWorkbook.Worksheets(1).Range("A65536").End(xlUp).Row + 1
+          i = .Range("A65536").End(xlUp).Row
+          'r = .Range("A65536").End(xlToLeft).Columns
+          .Range(Cells(2, 1), Cells(i, 33)).Copy ThisWorkbook.Worksheets(1).Cells(m, 2)
+          ThisWorkbook.Worksheets(1).Range(Cells(m, 1), Cells(m + i - 2, 1)) = Mid(myname, 1, Len(myname) - 8)
+        End With
+        .Close False
+      End With
+    End If
+    
+    myname = Dir
+  Loop
+End Sub
+
+Sub test0()
+  Dim r%, i%
+  Dim wb As Workbook
+  Dim ws As Worksheet
+  Dim mypath$, myname$
+  Application.ScreenUpdating = False
+  Application.DisplayAlerts = False
+  
+  r = 38
+  i = 47
+  
+  
+  
+  With ThisWorkbook.Worksheets("LateralLeakage-t0RT")
+  .Range("F21:Z30").Copy
+  .Range("F21").PasteSpecial xlPasteValues
+    For n = 0 To 12 Step 1
+        .Range("F" & r & ":Z" & i).Copy
+        .Range("F" & r).PasteSpecial xlPasteValues
+        r = r + 12
+        i = i + 12
+    Next
+  End With
+End Sub
+
+Sub test0C()
+  Dim r%, i%, j%
+  Dim wb As Workbook
+  Dim ws As Worksheet
+  Dim mypath$, myname$
+  Application.ScreenUpdating = False
+  Application.DisplayAlerts = False
+  
+  r = 38
+  i = 47
+  
+  j = InputBox("几片屏1-9", "数据量")
+  
+  If 0 < j And j < 10 Then
+    r = r + j
+    With ThisWorkbook.Worksheets("LateralLeakage-t0RT")
+  '.Range("F21:Z30").ClearContens
+  
+        For n = 0 To 12 Step 1
+            .Range("F" & r & ":BJ" & i).ClearContents
+            r = r + 12
+            i = i + 12
+        Next
+    End With
+  Else
+    MsgBox ("超量")
+  End If
+  
+End Sub
+
+Sub test32()
+  Dim r%, i%
+  Dim wb As Workbook
+  Dim ws As Worksheet
+  Dim mypath$, myname$
+  Application.ScreenUpdating = False
+  Application.DisplayAlerts = False
+  
+  r = 60
+  i = 91
+
+  With ThisWorkbook.Worksheets("LateralLeakage-t0RT (32)")
+  .Range("F21:Z52").Copy
+  .Range("F21").PasteSpecial xlPasteValues
+    For n = 0 To 12 Step 1
+        .Range("F" & r & ":Z" & i).Copy
+        .Range("F" & r).PasteSpecial xlPasteValues
+        r = r + 34
+        i = i + 34
+    Next
+  End With
+End Sub
