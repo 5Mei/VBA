@@ -1,0 +1,30 @@
+Sub testDBV()
+  Dim r%, i%
+  Dim wb As Workbook
+  Dim ws As Worksheet
+  Dim mypath$, myname$
+  Application.ScreenUpdating = False
+  Application.DisplayAlerts = False
+  mypath = ThisWorkbook.Path & "\"
+  myname = Dir(mypath & "*.csv")
+  With Worksheets(1)
+    .UsedRange.Offset(3, 1).Clear
+  End With
+  m = 5
+  Do While myname <> ""
+    If myname <> ThisWorkbook.Name Then
+      Set wb = GetObject(mypath & myname)
+      With wb
+        With .Worksheets(1)
+          
+          .Range("C2:IK33").Copy
+          ThisWorkbook.Worksheets("DBV_Gray Scan").Cells(m, 4).PasteSpecial xlPasteValues
+          ThisWorkbook.Worksheets("DBV_Gray Scan").Cells(m - 3, 3) = Mid(myname, 1, Len(myname) - 4)
+        End With
+        .Close False
+      End With
+    End If
+    m = m + 36
+    myname = Dir
+  Loop
+End Sub
