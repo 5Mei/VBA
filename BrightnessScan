@@ -1,0 +1,119 @@
+
+Sub getAllFileAPL20()
+'Columns(1).Delete
+On Error Resume Next
+Dim f As String
+Dim file() As String
+Dim wb As Workbook
+Dim ws As Worksheet
+Dim mypath$, myname$
+Dim i, k, x, n
+
+i = 1
+k = 1
+x = 3
+Arr = Array("*255.csv", "*127.csv", "*95.csv", "*63.csv", "*31.csv", "*15.csv")
+ReDim file(1 To i)
+'file(1) = sFolderPath & "\"
+file(1) = ThisWorkbook.Path & "\"
+
+'-- »ñµÃËùÓÐ×ÓÄ¿Â¼
+Do Until i > k
+    f = Dir(file(i), vbDirectory)
+        Do Until f = ""
+            If InStr(f, ".") = 0 Then
+                k = k + 1
+                ReDim Preserve file(1 To k)
+                'file(k) = file(i) & f & "\"
+                file(k) = f
+            End If
+            f = Dir
+        Loop
+    i = i + 1
+Loop
+
+'-- »ñµÃËùÓÐ×ÓÄ¿Â¼ÏÂµÄËùÓÐÎÄ¼þ
+For i = 2 To k
+    j = 5
+    
+    ThisWorkbook.Worksheets("BrightscanAPL20").Cells(16, x - 1) = file(i)
+
+    For n = 0 To 5
+        myname = Dir(ThisWorkbook.Path & "\" & file(i) & "\" & Arr(n))
+        Set wb = GetObject(ThisWorkbook.Path & "\" & file(i) & "\" & myname)
+         With wb
+             With .Worksheets(1)
+            .Range("C2:E2049").Copy
+            ThisWorkbook.Worksheets("BrightscanAPL20").Cells(19, x).PasteSpecial Paste:=xlPasteValues
+            .Close False
+            x = x + 3
+            End With
+        End With
+    Next
+    x = x + 1
+Next
+    
+
+End Sub
+Sub APL100()
+'Columns(1).Delete
+On Error Resume Next
+Dim f As String
+Dim file() As String
+Dim wb As Workbook
+Dim ws As Worksheet
+Dim mypath$, myname$
+Dim i, k, x, n
+
+i = 1
+k = 1
+x = 4
+Arr = Array("*255.csv", "*127.csv", "*95.csv", "*63.csv", "*31.csv", "*15.csv")
+ReDim file(1 To i)
+'file(1) = sFolderPath & "\"
+file(1) = ThisWorkbook.Path & "\"
+
+'-- »ñµÃËùÓÐ×ÓÄ¿Â¼
+Do Until i > k
+    f = Dir(file(i), vbDirectory)
+        Do Until f = ""
+            If InStr(f, ".") = 0 Then
+                k = k + 1
+                ReDim Preserve file(1 To k)
+                'file(k) = file(i) & f & "\"
+                file(k) = f
+            End If
+            f = Dir
+        Loop
+    i = i + 1
+Loop
+
+'-- »ñµÃËùÓÐ×ÓÄ¿Â¼ÏÂµÄËùÓÐÎÄ¼þ
+For i = 2 To k
+    j = 5
+    
+    ThisWorkbook.Worksheets("BrightScan").Cells(3, x - 1) = file(i)
+
+    For n = 0 To 5
+        myname = Dir(ThisWorkbook.Path & "\" & file(i) & "\" & Arr(n))
+        Set wb = GetObject(ThisWorkbook.Path & "\" & file(i) & "\" & myname)
+         With wb
+             With .Worksheets(1)
+            .Range("C2:E2049").Copy
+            ThisWorkbook.Worksheets("BrightScan").Cells(5, x).PasteSpecial Paste:=xlPasteValues
+            .Close False
+            x = x + 3
+            End With
+        End With
+    Next
+    x = x + 11
+Next
+    
+
+End Sub
+
+Private Sub CommandButton2_Click()
+Dim i As Long
+Sheets(1).Range("A1:I300").ClearContents
+
+End Sub
