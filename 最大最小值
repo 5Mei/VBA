@@ -1,0 +1,23 @@
+Sub minmax()
+    Application.ScreenUpdating = False        '冻结屏幕，以防屏幕抖动
+    With Application   '保持自动计算状态
+        .Calculation = xlAutomatic
+        .MaxChange = 0.001
+    End With
+    ActiveWorkbook.PrecisionAsDisplayed = False
+    Sheets("Sheet1").Range("A1:C20000").AdvancedFilter Action:=xlFilterCopy, _
+        CopyToRange:=Range("A4:C4"), Unique:=True
+
+x = Range("a4").End(xlDown).Row
+    Range("e5").Select
+    Selection.FormulaArray = _
+        "=MAX(IF((Sheet1!R2C1:R20000C1=RC[-4])*(Sheet1!R2C2:R20000C2=RC[-3])*(Sheet1!R2C3:R20000C3=RC[-2]),Sheet1!R2C4:R20000C4))"
+    Selection.AutoFill Destination:=Range("E5:E" & x), Type:=xlFillDefault
+Range("E5:E" & x).Value = Range("E5:E" & x).Value
+    Range("D5").Select
+    Selection.FormulaArray = _
+        "=MIN(IF((Sheet1!R2C1:R20000C1=RC[-3])*(Sheet1!R2C2:R20000C2=RC[-2])*(Sheet1!R2C3:R20000C3=RC[-1]),Sheet1!R2C4:R20000C4))"
+    Selection.AutoFill Destination:=Range("D5:D" & x), Type:=xlFillDefault
+Range("D5:D" & x).Value = Range("D5:D" & x).Value
+ Range("G4").Select
+End Sub
