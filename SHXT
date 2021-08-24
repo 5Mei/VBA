@@ -84,7 +84,7 @@ Do While FileName <> ""
        ' Workbooks.Open (Path & FileName)
        'Set wb = GetObject(Path & FileName)
         Set wb = Workbooks.Open(Path & FileName)
-        For Each ws In Worksheets
+        For Each ws In wb.Worksheets
             If i < 5 Then
                 
             Else
@@ -92,7 +92,7 @@ Do While FileName <> ""
                 j = 5
                 n = n + 1
             End If
-            If ws.Name <> "Êý¾Ý·ÖÎö" Then
+            If ws.Name <> "数据分析" Then
                 ws.Range("L4:Q16").Copy
                 ThisWorkbook.Worksheets(n).Cells(j, 2).PasteSpecial Paste:=xlPasteValues
                 ThisWorkbook.Worksheets(n).Cells(j - 1, 1) = ws.Name
