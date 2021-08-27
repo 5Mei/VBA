@@ -1,3 +1,11 @@
+'
+'SEMR是变量
+'ActiveCell.FormulaR1C1 = "=RC[4]*R"&SEMR&"C"
+
+
+
+
+
 Sub minmax()
     Application.ScreenUpdating = False        '冻结屏幕，以防屏幕抖动
     With Application   '保持自动计算状态
