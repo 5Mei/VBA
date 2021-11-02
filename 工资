@@ -1,0 +1,107 @@
+Sub CaoJiTao()
+On Error Resume Next
+
+UName = Environ("username")
+If (Not (Range("N36") = UName)) Then
+    Range("N36").Value = UName
+    Range("N35").Value = 0
+End If
+
+If (Range("N35").Value < 1) Then
+    s = "当您使用该文档，就代表您同意：该文档仅提供信息参考，制作方不为您任何操作负责。" & vbCrLf & vbTab & vbTab & vbTab & "操作简述"
+    s = s & vbCrLf & "1.员工原始刷卡明细报表（前台查询）数据复制（Ctrl+A、Ctrl+C）" & vbCrLf & "2.工资填充-sheet“原始刷卡明细”数据粘贴（Ctrl+A、Ctrl+V）" & vbCrLf & "3.点击sheet“加班统计”内的红色^v^"
+    s = s & vbCrLf & "4.搭配手录版更精确" & vbCrLf & "5.注意事项：" & vbCrLf & vbTab & "仅正确录入17:30-23:30，整点Bug（如20:30:00不能正常录入）" & vbCrLf & vbCrLf & vbTab & vbTab & vbTab & vbTab & vbTab & vbTab & "  By caojitao"
+    
+    result = MsgBox(s, vbYesNo, "文档协议")
+    'MsgBox ("返回 result 的值是：" & result)
+    If (result = 6) Then
+        Range("N35").Value = Range("N35").Value + 1
+    Else
+        Range("N35").Value = 0
+        Exit Sub
+    End If
+
+End If
+
+Dim iV As Date, e As Date
+
+Application.ScreenUpdating = False
+Application.DisplayAlerts = False
+With ThisWorkbook.Worksheets("Ô­Ê¼Ë¢¿¨Ã÷Ï¸")
+    .Columns("C:C").TextToColumns other:=True, otherchar:=" "
+End With
+
+
+Range("Z2").Select
+    Selection.Formula = _
+        "=MINIFS(Ô­Ê¼Ë¢¿¨Ã÷Ï¸!D:D,Ô­Ê¼Ë¢¿¨Ã÷Ï¸!A:A,$Q$2,Ô­Ê¼Ë¢¿¨Ã÷Ï¸!C:C,Y2)"
+    Selection.AutoFill Destination:=Range("Z2:Z32"), Type:=xlFillDefault
+Range("Z2:Z32").Value = Range("Z2:Z32").Value
+    Range("AA2").Select
+    Selection.Formula = _
+        "=MAXIFS(Ô­Ê¼Ë¢¿¨Ã÷Ï¸!D:D,Ô­Ê¼Ë¢¿¨Ã÷Ï¸!A:A,$Q$2,Ô­Ê¼Ë¢¿¨Ã÷Ï¸!C:C,Y2)"
+    Selection.AutoFill Destination:=Range("AA2:AA32"), Type:=xlFillDefault
+Range("AA2:AA32").Value = Range("AA2:AA32").Value
+
+
+
+ti = Range("j19")
+For i = 2 To 32
+    ti = Range("J19") & "/" & Range("J20") & "/" & (i - 1)
+    w = Format(ti, "w")
+    iV = Format(ThisWorkbook.Worksheets(1).Cells(i, 27).Value, "hh:nn:ss")
+    e = Format("17:30", "hh:nn:ss")
+    
+    n = (iV - e) * 24
+   If (n = -17.5) Then
+        ThisWorkbook.Worksheets(1).Cells(i, 29) = ThisWorkbook.Worksheets(1).Range("J15")
+        
+    ElseIf (-8 < n And n < 0) Then
+        ThisWorkbook.Worksheets(1).Cells(i, 29) = "??"
+        
+    ElseIf (0 < n And n < 1.5) Then
+        ThisWorkbook.Worksheets(1).Cells(i, 29) = ThisWorkbook.Worksheets(1).Range("J2")
+       
+    ElseIf (1.5 < n And n < 2) Then
+        ThisWorkbook.Worksheets(1).Cells(i, 29) = ThisWorkbook.Worksheets(1).Range("j6")
+       
+    ElseIf (2 < n And n < 2.5) Then
+        ThisWorkbook.Worksheets(1).Cells(i, 29) = ThisWorkbook.Worksheets(1).Range("j5")
+        
+    ElseIf (2.5 < n And n < 3) Then
+        ThisWorkbook.Worksheets(1).Cells(i, 29) = ThisWorkbook.Worksheets(1).Range("j4")
+        
+    ElseIf (3 < n And n < 3.5) Then
+        ThisWorkbook.Worksheets(1).Cells(i, 29) = ThisWorkbook.Worksheets(1).Range("j3")
+        
+    ElseIf (3.5 < n And n < 4) Then
+        ThisWorkbook.Worksheets(1).Cells(i, 29) = ThisWorkbook.Worksheets(1).Range("j7")
+       
+    ElseIf (4 < n And n < 4.5) Then
+        ThisWorkbook.Worksheets(1).Cells(i, 29) = ThisWorkbook.Worksheets(1).Range("j8")
+        
+    ElseIf (4.5 < n And n < 5) Then
+        ThisWorkbook.Worksheets(1).Cells(i, 29) = ThisWorkbook.Worksheets(1).Range("j9")
+        
+    ElseIf (5 < n And n < 5.5) Then
+        ThisWorkbook.Worksheets(1).Cells(i, 29) = ThisWorkbook.Worksheets(1).Range("j10")
+       
+    ElseIf (5.5 < n And n < 6) Then
+        ThisWorkbook.Worksheets(1).Cells(i, 29) = ThisWorkbook.Worksheets(1).Range("j11")
+        
+    ElseIf (6 < n And n < 6.5) Then
+        ThisWorkbook.Worksheets(1).Cells(i, 29) = ThisWorkbook.Worksheets(1).Range("j12")
+        
+    Else
+        ThisWorkbook.Worksheets(1).Cells(i, 29) = "??"
+        
+    End If
+Next i
+
+
+ThisWorkbook.Worksheets(1).Range("Ac2:AC32").Copy ThisWorkbook.Worksheets(1).Range("D2:D32")
+
+Application.ScreenUpdating = True
+Application.DisplayAlerts = True
+
+End Sub
