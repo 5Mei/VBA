@@ -1,0 +1,88 @@
+如下的代码中，如何将列号C用变量表示？
+Cells(3, 3)="=AVERAGE(表1!C3:C12)"
+
+Cells(3, 3).Formula="=AVERAGE(表1!R3C" & lie & ":R12C" & lie & ")"
+列变量lie
+
+
+
+
+Sub c()
+  Dim r%, i%
+  Dim wb As Workbook
+  Dim ws As Worksheet
+  'Dim mypath$, myname$, fNo$
+  Application.ScreenUpdating = False
+  Application.DisplayAlerts = False
+
+
+  m = 1
+  For Each fNo In ThisWorkbook.Worksheets(2).Range("A1:A1000")
+
+      With ThisWorkbook
+        With .Worksheets(1)
+
+          r = .Rows(1).Find(fNo, LookAt:=1, MatchCase:=True).Column
+
+          .Columns(r).Copy ThisWorkbook.Worksheets(3).Cells(1, m)
+          m = m + 1
+        End With
+        
+      End With
+    Next
+End Sub
+
+
+Sub c()
+  Dim r%, i%
+  Dim wb As Workbook
+  Dim ws As Worksheet
+  'Dim mypath$, myname$, fNo$
+  Application.ScreenUpdating = False
+  Application.DisplayAlerts = False
+
+
+  m = 1
+
+    For i = 1 To 100
+      fNo = ThisWorkbook.Worksheets(2).Cells(i, 1).Value
+      With ThisWorkbook
+        With .Worksheets(1)
+          .Columns(.Rows(1).Find(fNo, LookAt:=1, MatchCase:=True).Column).Copy ThisWorkbook.Worksheets(3).Cells(1, m)
+          m = m + 1
+        End With
+        
+      End With
+    Next i
+End Sub
+
+
+Sub c1()
+  Dim r%, i%
+  Dim wb As Workbook
+  Dim ws As Worksheet
+  Dim rang As Range
+  'Dim mypath$, myname$, fNo$
+  Application.ScreenUpdating = False
+  Application.DisplayAlerts = False
+
+
+  m = 1
+  For Each fNo In ThisWorkbook.Worksheets(2).Range("A1:A1000")
+
+      With ThisWorkbook
+        With .Worksheets(1)
+          
+          Set rang = .Rows(1).Find(fNo, LookAt:=1, MatchCase:=True)
+          If rang Is Nothing Then
+                ThisWorkbook.Worksheets(3).Cells(1, m) = fNo
+                m = m + 1
+          Else
+                r = .Rows(1).Find(fNo, LookAt:=1, MatchCase:=True).Column
+                .Columns(r).Copy ThisWorkbook.Worksheets(3).Cells(1, m)
+                m = m + 1
+            End If
+        End With
+      End With
+    Next
+End Sub
